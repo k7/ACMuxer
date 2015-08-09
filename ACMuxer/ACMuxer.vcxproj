@@ -18,6 +18,18 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ContratException.cpp" />
+    <ClCompile Include="InputVideo.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="VideoFrame.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ContratException.h" />
+    <ClInclude Include="ffmpeg.h" />
+    <ClInclude Include="InputVideo.h" />
+    <ClInclude Include="VideoFrame.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{9ABCC41F-DDD9-4EBD-B627-B29291D62A91}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -71,6 +83,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>D:\Projects\ACMuxer\ACMuxer\ACMuxer\ffmpeg\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -141,9 +154,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="test.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
