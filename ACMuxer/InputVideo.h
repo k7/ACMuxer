@@ -1,8 +1,8 @@
 #include "ffmpeg.h"
 #include <string>
 #include <vector>
-#include <memory>
 #include <iostream>
+#include "VideoFrame.h"
 
 using namespace std;
 
@@ -13,7 +13,7 @@ public:
 	int getStreamCount();
 	vector<int> getVideoStreamIndices();
 	AVCodecContext * getCodecContext(int streamIndex);
-	AVFrame * getNextFrame();
+	VideoFrame getNextFrame();
 	//unique_ptr<AVFrame, AVPtrDeleter> getNextFrame();
 	void DisplayFileInfo();
 

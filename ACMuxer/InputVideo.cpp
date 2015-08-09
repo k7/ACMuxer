@@ -93,58 +93,25 @@ AVCodecContext * InputVideo::getCodecContext(int streamIndex){
 	return pCodecContext;
 }
 
-AVFrame * InputVideo::getNextFrame(){
-	AVFrame *pFrame = 0;
-	pFrame = av_frame_alloc();
-	ASSERTION(pFrame>0);
+VideoFrame InputVideo::getNextFrame(){
+	// Allocate AVFrame
+	VideoFrame avFrame(pCodecContext);
 
-	AVFrame *pFrameRGB = 0;
-	pFrameRGB = av_frame_alloc(); // intermediate pframe
-	ASSERTION(pFrameRGB >0);
-
-	uint8_t *buffer = 0;
-	int numBytes;
-	// Determine required buffer size and allocate buffer
-	numBytes = avpicture_get_size(PIX_FMT_RGB24, pCodecContext->width, pCodecContext->height);
-	size_t size = numBytes*sizeof(uint8_t);
-	buffer = (uint8_t *)av_malloc(size);
-	int bufferint = (int)&buffer;
-
-	// Assign appropriate parts of buffer to image planes in pFrameRGB
-	// Note that pFrameRGB is an AVFrame, but AVFrame is a superset
-	// of AVPicture
-	int bytesize = avpicture_fill((AVPicture *)pFrameRGB, buffer, PIX_FMT_RGB24, pCodecContext->width, pCodecContext->height);
-	
-	struct SwsContext *sws_ctx = NULL;
+	//struct SwsContext *sws_ctx = NULL;
 	int frameFinished;
 	AVPacket packet;
-	// initialize SWS context for software scaling
-	sws_ctx = sws_getContext(pCodecContext->width,
-		pCodecContext->height,
-		pCodecContext->pix_fmt,
-		pCodecContext->width,
-		pCodecContext->height,
-		PIX_FMT_RGB24,
-		SWS_BILINEAR,
-		NULL,
-		NULL,
-		NULL
-		);
-
-	//int ret = av_read_frame(pFormatContext, &packet);
-	//ASSERTION(ret >= 0);
 
 	while (av_read_frame(pFormatContext, &packet) >= 0) {
 		// Is this a packet from the video stream?
 		if (packet.stream_index == currentStreamIndex) {
 			// Decode video frame
-			avcodec_decode_video2(pCodecContext, pFrame, &frameFinished, &packet);
+			avcodec_decode_video2(pCodecContext, avFrame.getAVFrame(), &frameFinished, &packet);
 
 			// Did we get a video frame?
 			if (frameFinished) {
 				
 				// Convert the image from its native format to RGB
-				sws_scale(sws_ctx, (uint8_t const * const *)pFrame->data, pFrame->linesize, 0, pCodecContext->height, pFrameRGB->data, pFrameRGB->linesize);
+				//sws_scale(sws_ctx, (uint8_t const * const *)pFrame->data, pFrame->linesize, 0, pCodecContext->height, pFrameRGB->data, pFrameRGB->linesize);
 				// Save the frame to disk
 				//if (++i <= 5)
 				//SaveFrame(pFrameRGB, pCodecCtx->width,pCodecCtx->height, i);
@@ -157,6 +124,6 @@ AVFrame * InputVideo::getNextFrame(){
 	// Free the packet that was allocated by av_read_frame
 	av_free_packet(&packet);
 	
-	return pFrame;
+	return avFrame;
 	//return pFrame;
 }

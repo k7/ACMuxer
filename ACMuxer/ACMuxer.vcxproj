@@ -22,12 +22,16 @@
     <ClCompile Include="ContratException.cpp" />
     <ClCompile Include="InputVideo.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Picture.cpp" />
+    <ClCompile Include="VideoFrameRGB.cpp" />
     <ClCompile Include="VideoFrame.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ContratException.h" />
     <ClInclude Include="ffmpeg.h" />
     <ClInclude Include="InputVideo.h" />
+    <ClInclude Include="Picture.h" />
+    <ClInclude Include="VideoFrameRGB.h" />
     <ClInclude Include="VideoFrame.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
