@@ -39,16 +39,17 @@ public:
 	void freeResources();
 	void reset(AVFrame * avFrame); // TODO: For reuse
 
-	AVCodecContext * getAVCodecContext();
-	AVFrame * getAVFrame();
-	int getWidth();
-	int getHeight();
+	AVCodecContext * getAVCodecContext() const;
+	AVFrame * getAVFrame() const;
+	AVPixelFormat getAVPixelFormat() const;
+	int getWidth() const;
+	int getHeight() const;
 
 protected:
-	AVPixelFormat getAVPixelFormat();
 	AVCodecContext * avCodecContext;
 	AVFrame * avFrame = nullptr;
+
 private:
-	int streamIndex;
+	int streamIndex = 0;
 	int frameIndex = 0;
 };

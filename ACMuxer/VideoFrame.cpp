@@ -43,15 +43,15 @@ void VideoFrame::freeResources() {
 	}
 }
 
-AVCodecContext* VideoFrame::getAVCodecContext(){
+AVCodecContext* VideoFrame::getAVCodecContext() const {
 	return avCodecContext;
 }
 
-AVFrame* VideoFrame::getAVFrame(){
+AVFrame* VideoFrame::getAVFrame() const {
 	return avFrame;
 }
 
-void VideoFrame::reset(AVFrame* avFrame){
+void VideoFrame::reset(AVFrame* avFrame) {
 	PRECONDITION(avFrame != nullptr);
 	
 	// free any references held by the frame and reset it to its original clean state before it is reused again.
@@ -59,14 +59,14 @@ void VideoFrame::reset(AVFrame* avFrame){
 
 }
 
-int VideoFrame::getWidth() {
+int VideoFrame::getWidth() const {
 	return avCodecContext->width;
 }
 
-int VideoFrame::getHeight() {
+int VideoFrame::getHeight() const {
 	return avCodecContext->height;
 }
 
-AVPixelFormat VideoFrame::getAVPixelFormat() {
+AVPixelFormat VideoFrame::getAVPixelFormat() const {
 	return avCodecContext->pix_fmt;
 }

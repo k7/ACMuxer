@@ -28,7 +28,7 @@ InputVideo::~InputVideo(){
 void InputVideo::DisplayFileInfo(){
 	if (pFormatContext){
 		// Get stream info
-		int ret = avformat_find_stream_info(pFormatContext, pDictionary);
+		int ret = avformat_find_stream_info(pFormatContext, nullptr);
 		ASSERTION(ret >= 0);
 
 		// Dump information about file onto standard error
@@ -109,13 +109,6 @@ VideoFrame InputVideo::getNextFrame(){
 
 			// Did we get a video frame?
 			if (frameFinished) {
-				
-				// Convert the image from its native format to RGB
-				//sws_scale(sws_ctx, (uint8_t const * const *)pFrame->data, pFrame->linesize, 0, pCodecContext->height, pFrameRGB->data, pFrameRGB->linesize);
-				// Save the frame to disk
-				//if (++i <= 5)
-				//SaveFrame(pFrameRGB, pCodecCtx->width,pCodecCtx->height, i);
-
 				break;
 			}
 		}
@@ -125,5 +118,4 @@ VideoFrame InputVideo::getNextFrame(){
 	av_free_packet(&packet);
 	
 	return avFrame;
-	//return pFrame;
 }
