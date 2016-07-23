@@ -8,23 +8,31 @@ using namespace std;
 
 class InputVideo{
 public:
-	InputVideo(string filepath);
+	InputVideo(const InputVideo& other) = delete;				// Disable copy constructor
+	InputVideo& operator=(const InputVideo& other) = delete;	// Disable copy assignment
+	InputVideo(InputVideo&& other);								// Move constructor
+	InputVideo& operator=(InputVideo&& other);					// Move assignment
+	void freeResources();
+	
+	InputVideo(string filepath);								// Constructor
 	~InputVideo();
-	int getStreamCount();
-	vector<int> getVideoStreamIndices();
-	AVCodecContext * getCodecContext(int streamIndex);
-	VideoFrame getNextFrame();
+	int getStreamCount() const;
+
+	AVCodecContext * openStream(int streamIndex);			// Main external API structure.
+	AVCodecContext * getCodecContextOLD(int streamIndex);		// Main external API structure.
+	vector<int> getVideoStreamIndices() const;					// List of stream indexes containing video
+	VideoFrame getNextFrame() const;
 	//unique_ptr<AVFrame, AVPtrDeleter> getNextFrame();
-	void DisplayFileInfo();
+	void DisplayFileInfo() const;
 
 private:
-	AVDictionary ** pDictionary = nullptr; // Options, unused
-	AVFormatContext * pFormatContext = nullptr;
-	AVInputFormat * pInputFormat = nullptr; // Input Format
-	AVCodecContext *pCodecContext = nullptr; // Codec Context
+	AVDictionary ** avDictionary = nullptr;						// Options, unused
+	AVFormatContext * avFormatContext = nullptr;				// Format I/O context
+	AVInputFormat * avInputFormat = nullptr;					// Input Format
+	AVCodecContext *avCodecContext = nullptr;					// Codec Context
 	int currentStreamIndex = -1;
 	int currentFrameIndex = -1;
-	InputVideo(const InputVideo &) = delete;
+	//InputVideo(const InputVideo &) = delete;
 	string filename;
 	
 };

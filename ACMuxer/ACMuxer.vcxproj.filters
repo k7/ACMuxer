@@ -18,16 +18,13 @@
     <ClCompile Include="ContratException.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="InputVideo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VideoFrame.cpp">
+    <ClCompile Include="VideoStream.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Picture.cpp">
+    <ClCompile Include="File.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -38,13 +35,10 @@
     <ClInclude Include="ffmpeg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="InputVideo.h">
+    <ClInclude Include="VideoStream.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="VideoFrame.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Picture.h">
+    <ClInclude Include="File.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

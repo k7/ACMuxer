@@ -12,6 +12,7 @@ VideoFrame::VideoFrame(VideoFrame&& other) {
 	avCodecContext = other.avCodecContext;
 	avFrame = other.avFrame;
 	
+	// Free other object so destructor does not free it
 	other.avCodecContext = nullptr;
 	other.avFrame = nullptr;
 }
@@ -24,7 +25,7 @@ VideoFrame& VideoFrame::operator=(VideoFrame&& other) {
 		freeResources();
 		// Move from other object
 		avFrame = other.avFrame;
-		// Free other object
+		// Free other object so destructor does not free it
 		other.avFrame = nullptr;
 	}
 	return *this;

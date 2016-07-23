@@ -20,7 +20,8 @@ public:
 	void freeResources();
 	void SavePPM(const string& filename);
 private:
-	const AVPixelFormat avPixelFormat = PIX_FMT_RGB24;
+	//const AVPixelFormat avPixelFormat = PIX_FMT_RGB24;
+	const AVPixelFormat avPixelFormat = AV_PIX_FMT_RGB24;
 	struct SwsContext * swsContext = nullptr;
 };
 

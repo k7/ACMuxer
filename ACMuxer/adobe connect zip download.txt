@@ -1,0 +1,5 @@
+Launch link:
+https://classevirtuelle.ulaval.ca/l74a5xblwr3/?launcher=false&fcsContent=true&pbMode=normal
+
+Change to:
+https://classevirtuelle.ulaval.ca/l74a5xblwr3/output/filename.zip?download=zip

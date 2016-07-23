@@ -20,17 +20,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ContratException.cpp" />
-    <ClCompile Include="InputVideo.cpp" />
+    <ClCompile Include="File.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Picture.cpp" />
-    <ClCompile Include="VideoFrame.cpp" />
+    <ClCompile Include="VideoStream.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ContratException.h" />
     <ClInclude Include="ffmpeg.h" />
-    <ClInclude Include="InputVideo.h" />
-    <ClInclude Include="Picture.h" />
-    <ClInclude Include="VideoFrame.h" />
+    <ClInclude Include="File.h" />
+    <ClInclude Include="VideoStream.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{9ABCC41F-DDD9-4EBD-B627-B29291D62A91}</ProjectGuid>
@@ -85,10 +83,15 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>D:\Projects\ACMuxer\ACMuxer\ACMuxer\ffmpeg\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Coding\ACMuxer\ACMuxer\ffmpeg\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Coding\ACMuxer\ACMuxer\ffmpeg\lib;$(LibraryPath)</LibraryPath>
+    <SourcePath>C:\Coding\ACMuxer\ACMuxer\ffmpeg\src;$(SourcePath)</SourcePath>
+    <ExecutablePath>$(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Coding\ACMuxer\ACMuxer\ffmpeg\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Coding\ACMuxer\ACMuxer\ffmpeg\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -103,10 +106,14 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalOptions>/APPCONTAINER:NO </AdditionalOptions>
+      <AdditionalDependencies>avcodec.lib;avdevice.lib;avformat.lib;avfilter.lib;avutil.lib;postproc.lib;swresample.lib;swscale.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Coding\ACMuxer\ACMuxer\ffmpeg\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -120,6 +127,8 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
