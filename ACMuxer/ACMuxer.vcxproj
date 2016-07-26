@@ -19,15 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ContratException.cpp" />
-    <ClCompile Include="File.cpp" />
+    <ClCompile Include="FileIn.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="VideoStream.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ContratException.h" />
     <ClInclude Include="ffmpeg.h" />
-    <ClInclude Include="File.h" />
+    <ClInclude Include="FileIn.h" />
     <ClInclude Include="VideoStream.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

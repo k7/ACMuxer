@@ -1,8 +1,8 @@
-#include "File.h"
-#include "ContratException.h"
+#include "FileIn.h"
 #include "VideoStream.h"
+#include <assert.h>
 
-File::File(string filename) {
+FileIn::FileIn(string filename) {
 	av_register_all();
 
 	// Allocate format context memory
@@ -11,14 +11,14 @@ File::File(string filename) {
 	// Open an input stream and read the header. The codecs are not opened. 
 	AVFormatContext* avFormatContextPtr = avFormatContext.get();
 	int ret = avformat_open_input(&avFormatContextPtr, filename.c_str(), nullptr, nullptr);
-	ASSERTION(ret >= 0);
+	assert(ret >= 0);
 
 	// Get stream info (this initializes the number of streams, etc.)
 	ret = avformat_find_stream_info(avFormatContext.get(), nullptr);
-	ASSERTION(ret >= 0);
+	assert(ret >= 0);
 }
 
-void File::displayFileInfo() const {
+void FileIn::displayFileInfo() const {
 	// Dump information about file onto standard error
 	int streamIndex = 0;
 	int isOutput = 0; // input
@@ -26,7 +26,7 @@ void File::displayFileInfo() const {
 }
 
 // Get indices of video streams in file
-vector<int> File::getVideoStreamIndices() const {
+vector<int> FileIn::getVideoStreamIndices() const {
 	vector<int> indices;
 	for (unsigned int i = 0; i < avFormatContext->nb_streams; i++) {
 		if (avFormatContext->streams[i]->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
@@ -36,6 +36,6 @@ vector<int> File::getVideoStreamIndices() const {
 	return indices;
 }
 
-VideoStream File::getVideoStream(int streamIndex) const {
+VideoStream FileIn::getVideoStream(int streamIndex) const {
 	return VideoStream(avFormatContext, streamIndex);
 }

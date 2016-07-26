@@ -15,30 +15,24 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ContratException.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="VideoStream.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="File.cpp">
+    <ClCompile Include="FileIn.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ContratException.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ffmpeg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="VideoStream.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="File.h">
+    <ClInclude Include="FileIn.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -3,18 +3,29 @@
 #include <iostream>
 //#include "VideoFrameRGB.h"
 //#include "Picture.h"
-#include "File.h"
 #include "VideoStream.h"
+#include "FileIn.h"
+#include <cassert>
 using namespace std;
 
+//#define INBUF_SIZE 4096
+
 int main() {
-	avformat_free_context(nullptr);
-	File file("c:/Coding/video.flv");
-	
-	
-	//cout << "getStreamCount: " << static_cast<int>(file.getVideoStreamIndices()[0]) << endl;;
-	VideoStream vs = file.getVideoStream(0);
+	//avformat_free_context(nullptr);
+	FileIn file("c:/Coding/video.flv");
 	file.displayFileInfo();
+	//cout << "getStreamCount: " << static_cast<int>(file.getVideoStreamIndices().size()) << endl;;
+	VideoStream vs = file.getVideoStream(0);
+
+	vector<Frame> v;
+	for (int i = 0;; ++i) {
+		auto f = vs.getNextFrame();
+		if (!f) break;
+		//av_opt_ptr
+		v.push_back(std::move(f));
+		//cout << i << endl;
+		//cout << f.get()->pts << endl;
+	} 
 
 	return 0;
 }

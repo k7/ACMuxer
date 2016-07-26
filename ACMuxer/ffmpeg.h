@@ -5,10 +5,11 @@
 extern "C"
 {
 	// Requires ffmpeg folder added to VC++ include directory
-	#include <libavcodec\avcodec.h>
-	#include <libavformat\avformat.h>
-	#include <libswscale\swscale.h>
-	#include <libavutil\error.h>
+	#include <libavcodec/avcodec.h>
+	#include <libavformat/avformat.h>
+	#include <libswscale/swscale.h>
+	#include <libavutil/opt.h>
+	#include <libavutil/error.h>
 }
 
 // This replaces Additional Dependencies under Linker
@@ -22,35 +23,35 @@ extern "C"
 //#pragma comment(lib, "avdevice.lib")
 #pragma comment(lib, "avfilter.lib")
 
+// DLL files location is specified in Project properties...Debugging...Environment
+
 #include <memory>
 #include <iostream>
-using namespace std;
 
-struct sCodecContextDeleter {
+using namespace std;
+struct AVCodecContextDeleter {
 	void operator()(AVCodecContext* avCodecContext) const {
 		cout << "AVCodecContextDeleter" << endl;
 		avcodec_free_context(&avCodecContext);
 	};
 };
-
-inline void AVCodecContextDeleter(AVCodecContext* avCodecContext) {
-	cout << "AVCodecContextDeleter" << endl;
-	avcodec_free_context(&avCodecContext);
-};
-struct sFormatContextDeleter {
+struct AVFormatContextDeleter {
 	void operator()(AVFormatContext* avFormatContext) const {
 		cout << "AVFormatContextDeleter" << endl;
 		// Close an opened input AVFormatContext
 		avformat_close_input(&avFormatContext);
 	}
 };
-inline void AVFormatContextDeleter(AVFormatContext* avFormatContext) {
-	cout << "AVFormatContextDeleter" << endl;
-	// Close an opened input AVFormatContext
-	avformat_close_input(&avFormatContext);
+struct AVPacketDeleter {
+	void operator()(AVPacket* avPacket) const {
+		cout << "AVPacketDeleter" << endl;
+		// Wipe the packet & unreferences the buffer referenced by the packet
+		av_packet_unref(avPacket);
+	}
 };
-
-
-//extern function<void(AVFormatContext*)> fFormatContextDeleter = AVFormatContextDeleter;
-//extern function<void(AVCodecContext*)> fCodecContextDeleter = AVCodecContextDeleter;
-
+struct AVFrameDeleter {
+	void operator()(AVFrame* avFrame) const {
+		cout << "AVFrameDeleter" << endl;
+		av_frame_free(&avFrame);
+	}
+};

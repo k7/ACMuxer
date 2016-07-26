@@ -8,28 +8,28 @@
 class VideoStream;
 using namespace std;
 
-class File {
+class FileIn {
 public:
-	File(const File& other) = delete;
+	FileIn(const FileIn& other) = delete;
 
-	File(File&& other)
+	FileIn(FileIn&& other)
 		: avFormatContext(std::move(other.avFormatContext)) {
 	}
 
-	File& operator=(const File& other) = delete;
+	FileIn& operator=(const FileIn& other) = delete;
 
-	File& operator=(File&& other) {
+	FileIn& operator=(FileIn&& other) {
 		if (this == &other)
 			return *this;
 		avFormatContext = std::move(other.avFormatContext);
 		return *this;
 	}
 
-	File(string filename);
+	FileIn(string filename);
 	void displayFileInfo() const;
 	vector<int> getVideoStreamIndices() const;					// List of stream indexes containing video
 	VideoStream getVideoStream(int streamIndex) const;
 private:
-	unique_ptr<AVFormatContext, sFormatContextDeleter> avFormatContext;
+	unique_ptr<AVFormatContext, AVFormatContextDeleter> avFormatContext;
 };
 
