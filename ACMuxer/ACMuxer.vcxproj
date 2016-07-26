@@ -20,12 +20,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FileIn.cpp" />
+    <ClCompile Include="Frame.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="VideoStream.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ffmpeg.h" />
     <ClInclude Include="FileIn.h" />
+    <ClInclude Include="Frame.h" />
     <ClInclude Include="VideoStream.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
