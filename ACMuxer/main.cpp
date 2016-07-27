@@ -6,27 +6,35 @@
 #include "VideoStream.h"
 #include "FileIn.h"
 #include <cassert>
+//#include <inttypes.h>
 using namespace std;
+#define AV_TS_MAX_STRING_SIZE 32
 
 //#define INBUF_SIZE 4096
+char *av_ts_make_time_string(char *buf, int64_t ts, AVRational *tb)
+{
+	if (ts == AV_NOPTS_VALUE) snprintf(buf, AV_TS_MAX_STRING_SIZE, "NOPTS");
+	else                      snprintf(buf, AV_TS_MAX_STRING_SIZE, "%.6g", av_q2d(*tb) * ts);
+	return buf;
+}
 
 int main() {
-	//avformat_free_context(nullptr);
+      __int64 test = 0;
 	FileIn file("c:/Coding/video.flv");
 	file.displayFileInfo();
 	//cout << "getStreamCount: " << static_cast<int>(file.getVideoStreamIndices().size()) << endl;;
 	VideoStream vs = file.getVideoStream(0);
-
-	vector<Frame> v;
-	for (int i = 0;; ++i) {
-		auto f = vs.getNextFrame();
-		if (!f) break;
-		//av_opt_ptr
-		v.push_back(std::move(f));
-		//cout << i << endl;
-		//cout << f.get()->pts << endl;
-	} 
-
+	for(int i = 0; i<10;++i) {
+		auto frame = vs.getNextFrame();
+		uint64_t pts = static_cast<uint64_t>(frame.avFrame.get()->pts);
+		char ts[AV_TS_MAX_STRING_SIZE];
+		char * p = &(ts[0]);
+		//*p = ts[0];
+		
+		av_ts_make_time_string(p, frame.pkt.pts, &(vs.avCodecContext->time_base));
+		//auto ts2 = av_q2d(vs.avCodecContext->time_base) * pts;
+		cout << ts << endl;
+	}
 	return 0;
 }
 //int mainOLD(){

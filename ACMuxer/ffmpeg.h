@@ -10,6 +10,7 @@ extern "C"
 	#include <libswscale/swscale.h>
 	#include <libavutil/opt.h>
 	#include <libavutil/error.h>
+	//#include <libavutil/timestamp.h>
 }
 
 // This replaces Additional Dependencies under Linker

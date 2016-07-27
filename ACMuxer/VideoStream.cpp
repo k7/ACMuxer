@@ -43,7 +43,7 @@ Frame VideoStream::getNextFrame() {
 			assert(state >= 0);
 		}
 	}
-	return Frame(std::move(frame));
+	return Frame(std::move(frame), *pkt.get());
 }
 
 int VideoStream::readPacket() {
@@ -51,11 +51,6 @@ int VideoStream::readPacket() {
 	// Read the next avFrame from file and fill packet with compressed data
 	// If pkt->buf is NULL, then the packet is valid until the next av_read_frame() or until avformat_close_input().
 	// Otherwise the packet is valid indefinitely.In both cases the packet must be freed with av_packet_unref when it is no longer needed.
-
-	// temp packet copy
-	/*AVPacket cpy;
-	cpy.buf = nullptr;
-	av_copy_packet(&cpy, pkt.get());*/
 	
 	int ret = av_read_frame(avFormatContext.get(), pkt.get());
 	if (ret < 0) {
