@@ -10,6 +10,8 @@ extern "C"
 	#include <libswscale/swscale.h>
 	#include <libavutil/opt.h>
 	#include <libavutil/error.h>
+	//#include <libavutil/avutil.h>
+	#include <libavutil/imgutils.h>
 	//#include <libavutil/timestamp.h>
 }
 
@@ -18,10 +20,10 @@ extern "C"
 #pragma comment(lib, "avcodec.lib")
 #pragma comment(lib, "avformat.lib")
 #pragma comment(lib, "avutil.lib")
-//#pragma comment(lib, "postproc.lib")
+#pragma comment(lib, "postproc.lib")
 #pragma comment(lib, "swresample.lib")
 #pragma comment(lib, "swscale.lib")
-//#pragma comment(lib, "avdevice.lib")
+#pragma comment(lib, "avdevice.lib")
 #pragma comment(lib, "avfilter.lib")
 
 // DLL files location is specified in Project properties...Debugging...Environment
@@ -33,7 +35,9 @@ using namespace std;
 struct AVCodecContextDeleter {
 	void operator()(AVCodecContext* avCodecContext) const {
 		cout << "AVCodecContextDeleter" << endl;
-		avcodec_free_context(&avCodecContext);
+		if (avCodecContext->codec_id >= 0) {
+		   avcodec_free_context(&avCodecContext);
+		}
 	};
 };
 struct AVFormatContextDeleter {
@@ -56,3 +60,9 @@ struct AVFrameDeleter {
 		av_frame_free(&avFrame);
 	}
 };
+
+static string GetAVErrorString(int errnum) {
+	char e[AV_ERROR_MAX_STRING_SIZE];
+	av_strerror(errnum, e, AV_ERROR_MAX_STRING_SIZE);
+	return string(e);
+}

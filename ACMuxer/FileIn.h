@@ -29,7 +29,11 @@ public:
 	void displayFileInfo() const;
 	vector<int> getVideoStreamIndices() const;					// List of stream indexes containing video
 	VideoStream getVideoStream(int streamIndex) const;
+	
+	
 private:
-	unique_ptr<AVFormatContext, AVFormatContextDeleter> avFormatContext;
+  unique_ptr<AVFormatContext, AVFormatContextDeleter> avFormatContext;
+
+	
 };
 

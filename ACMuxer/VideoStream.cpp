@@ -2,14 +2,15 @@
 #include <iostream>
 #include <assert.h>
 
-VideoStream::VideoStream(const unique_ptr<AVFormatContext, AVFormatContextDeleter>& avFormatCtx, int streamIndex) : avFormatContext(avFormatCtx) {
+VideoStream::VideoStream(const unique_ptr<AVFormatContext, AVFormatContextDeleter>& avFormatCtx, int streamIndex) 
+  : avFormatContext(avFormatCtx), streamIndex(streamIndex){
 	// Initialize AVPacket
 	pkt.reset(&_pkt);
 	av_init_packet(pkt.get());
 	
 	// Get a pointer to the codec context for the video stream
 	AVCodecParameters * pStreamCodecParameters = avFormatContext->streams[streamIndex]->codecpar;
-	
+		
 	// Find the decoder for the video stream
 	AVCodec * pCodec = avcodec_find_decoder(pStreamCodecParameters->codec_id);
 	assert(pCodec > nullptr); // Unsupported codec
@@ -30,6 +31,9 @@ Frame VideoStream::getNextFrame() {
 		if (state == AVERROR(EAGAIN)) {
 			readPacket();
 			state = avcodec_receive_frame(avCodecContext.get(), frame.get());
+			if(this->firstFramePts == -1) {
+			  firstFramePts = pkt.get()->pts;
+			}
 		}
 
 		assert(state != AVERROR(EINVAL)); // "codec not opened, or it is an encoder" << endl;
@@ -43,7 +47,10 @@ Frame VideoStream::getNextFrame() {
 			assert(state >= 0);
 		}
 	}
-	return Frame(std::move(frame), *pkt.get());
+	Frame f(std::move(frame), *pkt.get());
+	f.firstFramePts = firstFramePts; // meh, parent class should be called and know all this.
+	return f;
+	//return Frame(std::move(frame), *pkt.get());
 }
 
 int VideoStream::readPacket() {
@@ -59,7 +66,6 @@ int VideoStream::readPacket() {
 	}
 	else {
 		// Send packet to decoder
-		cout << pc++ << endl;
 		ret = avcodec_send_packet(avCodecContext.get(), pkt.get());
 		assert(ret == 0);
 	}
@@ -67,6 +73,11 @@ int VideoStream::readPacket() {
 	return ret;
 }
 
-	
+string VideoStream::getErrorReadPacket(int ret) {
+	switch(ret) {
+	case 0: return "Success";
+	case AVERROR(EAGAIN): return " input is not accepted right now - the packet must be resent after trying to read output AVERROR_EOF: the decoder has been flushed, and no new packets can be sent to it (also returned if more than 1 flush packet is sent)";
+	}
+}
 
 

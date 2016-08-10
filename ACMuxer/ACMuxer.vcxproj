@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FileIn.cpp" />
+    <ClCompile Include="FileOut.cpp" />
     <ClCompile Include="Frame.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="VideoStream.cpp" />
@@ -27,6 +28,7 @@
   <ItemGroup>
     <ClInclude Include="ffmpeg.h" />
     <ClInclude Include="FileIn.h" />
+    <ClInclude Include="FileOut.h" />
     <ClInclude Include="Frame.h" />
     <ClInclude Include="VideoStream.h" />
   </ItemGroup>
@@ -90,8 +92,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Coding\ACMuxer\ACMuxer\ffmpeg\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Coding\ACMuxer\ACMuxer\ffmpeg\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Coding\ACMuxer\ACMuxer\x264\include;C:\Coding\ACMuxer\ACMuxer\ffmpeg\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Coding\ACMuxer\ACMuxer\x264\lib;C:\Coding\ACMuxer\ACMuxer\ffmpeg\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>

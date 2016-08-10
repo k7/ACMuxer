@@ -10,30 +10,30 @@ using namespace std;
 class VideoStream
 {
 public:
-	VideoStream(VideoStream&& other)
-		: avCodecContext(std::move(other.avCodecContext)), avFormatContext(std::move(other).avFormatContext) {
-		cout << "VideoStream:Move Constructor" << endl;
-	}
-
-	VideoStream& operator=(VideoStream&& other) {
-		cout << "VideoStream:Move Assignment" << endl;
-		if (this == &other)
-			return *this;
-		avCodecContext = std::move(other.avCodecContext);
-		return *this;
-	}
-
 	VideoStream(const unique_ptr<AVFormatContext, AVFormatContextDeleter> &avFormatContext, int streamIndex);
+
 	unique_ptr<AVCodecContext, AVCodecContextDeleter> avCodecContext;
 	const unique_ptr<AVFormatContext, AVFormatContextDeleter>& avFormatContext;
 	Frame getNextFrame();
 	
+	// Accessors
+	AVStream * getAVStream() const { return avFormatContext.get()->streams[streamIndex]; }
+	AVCodecParameters * getAVCodecParameters() const {return avFormatContext.get()->streams[streamIndex]->codecpar;}
+	AVRational * getStreamTimeBase() const {
+	  return &avFormatContext.get()->streams[streamIndex]->time_base;
+	};
+		
 private:
-	int pc = 0;
+	int readPacket();
+	string getErrorReadPacket(int ret);
 	AVPacket _pkt;
 	unique_ptr<AVPacket, AVPacketDeleter> pkt; // Wrap _pkt to ensures last unref on destruction
-	int state = AVERROR(EAGAIN); // Start state = needs more input
-	int readPacket();
+
 	bool eof = false;
+	int state = AVERROR(EAGAIN); // Initial state = needs more input
+	int64_t firstFramePts = -1;  // To offset later frames
+
+	int streamIndex;
+	
 };
 

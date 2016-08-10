@@ -5,6 +5,7 @@
 //#include "Picture.h"
 #include "VideoStream.h"
 #include "FileIn.h"
+#include "FileOut.h"
 #include <cassert>
 //#include <inttypes.h>
 using namespace std;
@@ -19,22 +20,49 @@ char *av_ts_make_time_string(char *buf, int64_t ts, AVRational *tb)
 }
 
 int main() {
-      __int64 test = 0;
+	
+
 	FileIn file("c:/Coding/video.flv");
 	file.displayFileInfo();
 	//cout << "getStreamCount: " << static_cast<int>(file.getVideoStreamIndices().size()) << endl;;
 	VideoStream vs = file.getVideoStream(0);
-	for(int i = 0; i<10;++i) {
+	
+
+	FileOut encode("c:/Coding/out.mp4", 1376, 768);
+	
+	uint64_t lastpts = 0;
+	uint64_t pts = 0;
+	for(int i = 0; i<300;++i) {
 		auto frame = vs.getNextFrame();
-		uint64_t pts = static_cast<uint64_t>(frame.avFrame.get()->pts);
-		char ts[AV_TS_MAX_STRING_SIZE];
-		char * p = &(ts[0]);
-		//*p = ts[0];
+		if (!frame) break;
+		lastpts = pts;
+		pts = frame.getRelativePts();
+		cout << "duration: " << pts - lastpts << endl;
+		//cout << "PTS: " << pts << endl;
+		//uint64_t pts = static_cast<uint64_t>(frame.avFrame.get()->pts);
+		//char ts[AV_TS_MAX_STRING_SIZE];
+		//char * p = &(ts[0]);
 		
-		av_ts_make_time_string(p, frame.pkt.pts, &(vs.avCodecContext->time_base));
+		//AVRational r { 1,1000 };
+		//av_ts_make_time_string(p, frame.pkt.pts, &r);
+		
 		//auto ts2 = av_q2d(vs.avCodecContext->time_base) * pts;
-		cout << ts << endl;
+
+		//int64_t bestpts = av_frame_get_best_effort_timestamp(frame.avFrame.get());
+		//auto ctx = file.avFormatContext.get();
+		
+		//AVRational avTimeBaseQ{ 1, AV_TIME_BASE }; // microsecond (internal representation)
+		//bestpts = av_rescale_q(bestpts, ctx->streams[0]->time_base, avTimeBaseQ);
+
+		//cout << bestpts << endl;
+		//cout << frame.pkt.pts << endl;
+		//cout << frame.getRelativePts() << endl;
+
+		
+		encode.encodeFrame(frame,pts);
+		
 	}
+	encode.encodeFinish(pts);
 	return 0;
 }
 //int mainOLD(){
